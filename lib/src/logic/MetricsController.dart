@@ -1,194 +1,183 @@
-﻿// let _ = require('lodash');
-// let async = require('async');
+﻿import 'dart:async';
+import 'package:pip_services3_commons/pip_services3_commons.dart';
 
-// import { ConfigParams } from 'package:pip_services3_commons-node';
-// import { ICommandable } from 'package:pip_services3_commons-node';
-// import { IConfigurable } from 'package:pip_services3_commons-node';
-// import { IReferenceable } from 'package:pip_services3_commons-node'
-// import { DependencyResolver } from 'package:pip_services3_commons-node';
-// import { CommandSet } from 'package:pip_services3_commons-node';
-// import { IReferences } from 'package:pip_services3_commons-node';
-// import { FilterParams } from 'package:pip_services3_commons-node';
-// import { PagingParams } from 'package:pip_services3_commons-node';
-// import { DataPage } from 'package:pip_services3_commons-node';
+import '../data/version1/MetricDefinitionV1.dart';
+import '../data/version1/MetricUpdateV1.dart';
+import '../data/version1/MetricValueSetV1.dart';
+import '../data/version1/MetricValueV1.dart';
+import '../persistence/IMetricsPersistence.dart';
+import '../persistence/TimeHorizonConverter.dart';
+import '../persistence/TimeIndexComposer.dart';
+import '../persistence/TimeParser.dart';
 
-// import { MetricDefinitionV1 } from '../data/version1/MetricDefinitionV1';
-// import { MetricUpdateV1 } from '../data/version1/MetricUpdateV1';
-// import { MetricValueSetV1 } from '../data/version1/MetricValueSetV1';
-// import { MetricValueV1 } from '../data/version1/MetricValueV1';
-// import { IMetricsPersistence } from '../persistence/IMetricsPersistence';
-// import { TimeHorizonConverter } from '../persistence/TimeHorizonConverter';
-// import { TimeIndexComposer } from '../persistence/TimeIndexComposer';
-// import { TimeParser } from '../persistence/TimeParser';
+import './MetricsCommandSet.dart';
+import './IMetricsController.dart';
 
-// import { MetricsCommandSet } from './MetricsCommandSet';
-// import { IMetricsController } from './IMetricsController';
+class MetricsController
+    implements ICommandable, IMetricsController, IConfigurable, IReferenceable {
+  final ConfigParams _defaultConfig = ConfigParams.fromTuples(
+      ['dependencies.persistence', 'pip-services-metrics:persistence:*:*:1.0']);
 
-// export class MetricsController
-//     implements ICommandable, IMetricsController, IConfigurable, IReferenceable {
+  IMetricsPersistence _persistence;
+  MetricsCommandSet _commandSet;
+  DependencyResolver _dependencyResolver;
 
-//     private _defaultConfig: ConfigParams = ConfigParams.fromTuples(
-//         "dependencies.persistence", "pip-services-metrics:persistence:*:*:1.0"
-//     );
+  MetricsController() {
+    _dependencyResolver = DependencyResolver(_defaultConfig);
+  }
 
-//     private _persistence: IMetricsPersistence;
-//     private _commandSet: MetricsCommandSet;
-//     private _dependencyResolver: DependencyResolver;
+  @override
+  void configure(ConfigParams config) {
+    _dependencyResolver.configure(config);
+  }
 
-//     constructor() {
-//         this._dependencyResolver = new DependencyResolver(this._defaultConfig);
-//     }
+  @override
+  void setReferences(IReferences references) {
+    _dependencyResolver.setReferences(references);
 
-//     public configure(config: ConfigParams): void {
-//         this._dependencyResolver.configure(config);
-//     }
+    _persistence =
+        _dependencyResolver.getOneRequired<IMetricsPersistence>('persistence');
+  }
 
-//     public setReferences(references: IReferences): void {
-//         this._dependencyResolver.setReferences(references);
+  @override
+  CommandSet getCommandSet() {
+    _commandSet ??= MetricsCommandSet(this);
+    return _commandSet;
+  }
 
-//         this._persistence = this._dependencyResolver.getOneRequired<IMetricsPersistence>("persistence");
-//     }
+  Future<List<MetricDefinitionV1>> _getMetricDefinitionsWithName(
+      String correlationId, String name) async {
+    var filter = FilterParams.fromTuples(['name', name, 'time_horizon', 0]);
 
-//     public getCommandSet(): CommandSet {
-//         if (this._commandSet == null) {
-//             this._commandSet = new MetricsCommandSet(this);
-//         }
-//         return this._commandSet;
-//     }
+    var take = 500;
+    var paging = PagingParams(0, take);
 
-//     private getMetricDefinitionsWithName(String correlationId, name: string,
-//         callback: (err: any, items: MetricDefinitionV1[]) => void) {
+    var definitions = {};
+    var reading = true;
 
-//         let filter = FilterParams.fromTuples(
-//             "name", name,
-//             "time_horizon", 0
-//         );
+    for (; reading;) {
+      var page =
+          await _persistence.getPageByFilter(correlationId, filter, paging);
 
-//         let take = 500;
-//         let paging = new PagingParams(0, take);
+      for (var record in page.data) {
+        MetricDefinitionV1 definition = definitions[record.name];
+        if (definition == null) {
+          definition = MetricDefinitionV1();
 
-//         let definitions = {};
-//         let reading: boolean = true;
+          definition.name = record.name;
+          definition.dimension1 = <String>[];
+          definition.dimension2 = <String>[];
+          definition.dimension3 = <String>[];
 
-//         async.whilst(
-//             () =>  { return reading; },
-//             (callback) => {
-//                 this._persistence.getPageByFilter(correlationId, filter, paging, (err, page) => {
-//                     if (err) {
-//                         callback(err);
-//                         return;
-//                     }
+          definitions[record.name] = definition;
+        }
 
-//                     for (let record of page.data) {
-//                         let definition: MetricDefinitionV1 = definitions[record.name];
-//                         if (definition == null) {
-//                             definition = {
-//                                 name: record.name,
-//                                 dimension1: [],
-//                                 dimension2: [],
-//                                 dimension3: []
-//                             };
+        if (record.d1 != null && definition.dimension1.indexOf(record.d1) < 0) {
+          definition.dimension1.add(record.d1);
+        }
+        if (record.d2 != null && definition.dimension2.indexOf(record.d2) < 0) {
+          definition.dimension2.add(record.d2);
+        }
+        if (record.d3 != null && definition.dimension3.indexOf(record.d3) < 0) {
+          definition.dimension3.add(record.d3);
+        }
+      }
 
-//                             definitions[record.name] = definition;
-//                         }
+      if (page.data.isNotEmpty) {
+        paging.skip += take;
+      } else {
+        reading = false;
+      }
+    }
 
-//                         if (record.d1 != null && _.indexOf(definition.dimension1, record.d1) < 0) {
-//                             definition.dimension1.push(record.d1);
-//                         }
-//                         if (record.d2 != null && _.indexOf(definition.dimension2, record.d2) < 0) {
-//                             definition.dimension2.push(record.d2);
-//                         }
-//                         if (record.d3 != null && _.indexOf(definition.dimension3, record.d3) < 0) {
-//                             definition.dimension3.push(record.d3);
-//                         }
-//                     }
+    return List<MetricDefinitionV1>.from(definitions.values);
+  }
 
-//                     if (page.data.length > 0)
-//                         paging.skip += take;
-//                     else
-//                         reading = false;
+  @override
+  Future<List<MetricDefinitionV1>> getMetricDefinitions(String correlationId) {
+    return _getMetricDefinitionsWithName(correlationId, null);
+  }
 
-//                     callback(null);    
-//                 });
-//             },
-//             (err) => {
-//                 let values = _.values(definitions);
-//                 callback(err, values);
-//             }
-//         );
-//     }
+@override
+  Future<MetricDefinitionV1> getMetricDefinitionByName(
+      String correlationId, String name) async {
+    var items = await _getMetricDefinitionsWithName(correlationId, name);
 
-//     public getMetricDefinitions(String correlationId,
-//         callback: (err: any, items: MetricDefinitionV1[]) => void) {
-//         return this.getMetricDefinitionsWithName(correlationId, null, callback);
-//     }
+    return items.isNotEmpty ? items[0] : null;
+  }
 
-//     public getMetricDefinitionByName(String correlationId, name: string,
-//         callback: (err: any, item: MetricDefinitionV1) => void) {
-//         this.getMetricDefinitionsWithName(correlationId, name, (err, items) => {
-//             callback(err, items.length > 0 ? items[0] : null);
-//         });
-//     }
+  @override
+  Future<DataPage<MetricValueSetV1>> getMetricsByFilter(
+      String correlationId, FilterParams filter, PagingParams paging) async {
+    var page =
+        await _persistence.getPageByFilter(correlationId, filter, paging);
 
-//     public getMetricsByFilter(String correlationId, filter: FilterParams, paging: PagingParams, callback: (err: any, page: DataPage<MetricValueSetV1>) => void) {
-//         this._persistence.getPageByFilter(correlationId, filter, paging, (err, page) => {
-//             let timeHorizon = TimeHorizonConverter.fromString(filter.getAsNullableString("time_horizon"));
-//             let fromIndex = TimeIndexComposer.composeFromIndexFromFilter(timeHorizon, filter);
-//             let toIndex = TimeIndexComposer.composeToIndexFromFilter(timeHorizon, filter);
-    
-//             // Convert records into value sets
-//             let sets = {};
-    
-//             for (let record of page.data) {
-//                 // Generate index
-//                 let id = record.name + "_" + (record.d1 || "")
-//                     + "_" + (record.d2 || "")
-//                     + "_" + (record.d3 || "");
+    var timeHorizon = TimeHorizonConverter.fromString(
+        filter.getAsNullableString('time_horizon'));
+    var fromIndex =
+        TimeIndexComposer.composeFromIndexFromFilter(timeHorizon, filter);
+    var toIndex =
+        TimeIndexComposer.composeToIndexFromFilter(timeHorizon, filter);
 
-//                 // Get or create value set
-//                 let set: MetricValueSetV1 = sets[id];
-//                 if (set == null) {
-//                     set = {
-//                         name: record.name,
-//                         time_horizon: record.th,
-//                         dimension1: record.d1,
-//                         dimension2: record.d2,
-//                         dimension3: record.d3,
-//                         values: []
-//                     }
-//                     sets[id] = set;
-//                 }
+    // Convert records into value sets
+    var sets = {};
 
-//                 for (let key in record.val) {
-//                     if (key < fromIndex || key > toIndex)
-//                         return;
+    for (var record in page.data) {
+      // Generate index
+      var id = record.name +
+          '_' +
+          (record.d1 ?? '') +
+          '_' +
+          (record.d2 ?? '') +
+          '_' +
+          (record.d3 ?? '');
 
-//                     let value = new MetricValueV1();
-//                     TimeParser.parseTime(key, timeHorizon, value);
-//                     value.count = record.val[key].cnt;
-//                     value.sum = record.val[key].sum;
-//                     value.min = record.val[key].min;
-//                     value.max = record.val[key].max;
+      // Get or create value set
+      MetricValueSetV1 set = sets[id];
+      if (set == null) {
+        set = MetricValueSetV1()
+          ..name = record.name
+          ..time_horizon = record.th
+          ..dimension1 = record.d1
+          ..dimension2 = record.d2
+          ..dimension3 = record.d3
+          ..values = <MetricValueV1>[];
 
-//                     set.values.push(value);
-//                 };
-//             }
+        sets[id] = set;
+      }
 
-//             let total = page.total;
-//             let values = _.values(sets);
+      for (var key in record.val.keys) {
+        if (key.compareTo(fromIndex) < 0 || key.compareTo(toIndex) > 0) {
+          continue;
+        }
 
-//             callback(err, new DataPage<MetricValueSetV1>(values, total));
-//         });
-//     }
+        var value = MetricValueV1();
+        TimeParser.parseTime(key, timeHorizon, value);
+        value.count = record.val[key].cnt;
+        value.sum = record.val[key].sum;
+        value.min = record.val[key].min;
+        value.max = record.val[key].max;
 
-//     public updateMetric(String correlationId, update: MetricUpdateV1,
-//         maxTimeHorizon: number, callback: (err: any) => void) {
-//         this._persistence.updateOne(correlationId, update, maxTimeHorizon, callback);
-//     }
+        set.values.add(value);
+      }
+      ;
+    }
 
-//     public updateMetrics(String correlationId, updates: MetricUpdateV1[],
-//         maxTimeHorizon: number, callback: (err: any) => void) {
-//         this._persistence.updateMany(correlationId, updates, maxTimeHorizon, callback);
-//     }
+    var total = page.total;
+    var values = List<MetricValueSetV1>.from(sets.values);
 
-// }
+    return DataPage<MetricValueSetV1>(values, total);
+  }
+
+  @override
+  Future updateMetric(
+      String correlationId, MetricUpdateV1 update, int maxTimeHorizon) {
+    return _persistence.updateOne(correlationId, update, maxTimeHorizon);
+  }
+
+  @override
+  Future updateMetrics(
+      String correlationId, List<MetricUpdateV1> updates, int maxTimeHorizon) {
+    return _persistence.updateMany(correlationId, updates, maxTimeHorizon);
+  }
+}

@@ -7,7 +7,7 @@ class MetricRecordValueMap extends MapBase {
   final _values = <String, MetricRecordValue>{};
 
   @override
-  operator [](Object key) {
+  MetricRecordValue operator [](Object key) {
     return _values[key];
   }
 

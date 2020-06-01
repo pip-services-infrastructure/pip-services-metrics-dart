@@ -26,6 +26,7 @@ class MetricsMemoryPersistence
     TimeHorizonV1.Minute
   ];
 
+  @override
   var maxPageSize = 1000;
 
   MetricsMemoryPersistence() : super();
@@ -125,7 +126,7 @@ class MetricsMemoryPersistence
         item = items[index];
       }
 
-      MetricRecordValue value = item.val[timeIndex];
+      var value = item.val[timeIndex];
       if (value == null) {
         value = MetricRecordValue();
         value.cnt = 0;

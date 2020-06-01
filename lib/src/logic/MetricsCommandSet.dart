@@ -1,101 +1,83 @@
-﻿// import { CommandSet } from 'package:pip_services3_commons-node';
-// import { ICommand } from 'package:pip_services3_commons-node';
-// import { Command } from 'package:pip_services3_commons-node';
-// import { ObjectSchema } from 'package:pip_services3_commons-node'
-// import { FilterParamsSchema } from 'package:pip_services3_commons-node';
-// import { PagingParamsSchema } from 'package:pip_services3_commons-node';
-// import { FilterParams } from 'package:pip_services3_commons-node';
-// import { PagingParams } from 'package:pip_services3_commons-node';
-// import { TypeCode } from 'package:pip_services3_commons-node';
-// import { ArraySchema } from 'package:pip_services3_commons-node';
-// import { Parameters } from 'package:pip_services3_commons-node';
+﻿import 'package:pip_services3_commons/pip_services3_commons.dart';
 
-// import { IMetricsController } from './IMetricsController';
-// import { MetricUpdateV1Schema } from '../data/version1/MetricUpdateV1Schema';
-// import { TimeHorizonV1 } from '../data/version1/TimeHorizonV1';
-// import { MetricDefinitionV1,} from '../data/version1/MetricDefinitionV1';
-// import { MetricValueSetV1 } from '../data/version1/MetricValueSetV1';
-// import { MetricUpdateV1 } from '../data/version1/MetricUpdateV1';
+import './IMetricsController.dart';
+import '../data/version1/MetricUpdateV1Schema.dart';
+import '../data/version1/TimeHorizonV1.dart';
+import '../data/version1/MetricUpdateV1.dart';
 
-// export class MetricsCommandSet extends CommandSet {
-//     private _controller: IMetricsController;
+class MetricsCommandSet extends CommandSet {
+    IMetricsController _controller;
 
-//     constructor(controller: IMetricsController) {
-//         super();
-//         this._controller = controller;
+    MetricsCommandSet(IMetricsController controller):super() {
+        _controller = controller;
 
-//         this.addCommand(this.makeGetMetricDefinitionsCommand());
-//         this.addCommand(this.makeGetMetricDefinitionByNameCommand());
-//         this.addCommand(this.makeGetMetricsByFilterCommand());
-//         this.addCommand(this.makeUpdateMetricCommand());
-//         this.addCommand(this.makeUpdateMetricsCommand());
-//     }
+        addCommand(_makeGetMetricDefinitionsCommand());
+        addCommand(_makeGetMetricDefinitionByNameCommand());
+        addCommand(_makeGetMetricsByFilterCommand());
+        addCommand(_makeUpdateMetricCommand());
+        addCommand(_makeUpdateMetricsCommand());
+    }
 
-//     private makeGetMetricDefinitionsCommand(): ICommand {
-//         return new Command(
-//             "get_metric_definitions",
-//             new ObjectSchema(),
-//             (String correlationId, args: Parameters, callback: (err: any, result: any) => void) => {
-//                 this._controller.getMetricDefinitions(correlationId, callback);
-//             });
-//     }
+     ICommand _makeGetMetricDefinitionsCommand() {
+        return Command(
+            'get_metric_definitions',
+            ObjectSchema(),
+            (String correlationId, Parameters args) async {
+                return await _controller.getMetricDefinitions(correlationId);
+            });
+    }
 
-//     private makeGetMetricDefinitionByNameCommand(): ICommand {
-//         return new Command(
-//             "get_metric_definition_by_name",
-//             new ObjectSchema()
-//                 .withOptionalProperty("name", TypeCode.String),
-//             (String correlationId, args: Parameters, callback: (err: any, result: any) => void) => {
-//                 let name = args.getAsString("name");
+    ICommand _makeGetMetricDefinitionByNameCommand() {
+        return Command(
+            'get_metric_definition_by_name',
+            ObjectSchema()
+                .withOptionalProperty('name', TypeCode.String),
+            (String correlationId, Parameters  args) async {
+                var name = args.getAsString('name');
+                return await _controller.getMetricDefinitionByName(correlationId, name);
+            });
+    }
 
-//                 this._controller.getMetricDefinitionByName(correlationId, name, callback);
-//             });
-//     }
+    ICommand _makeGetMetricsByFilterCommand() {
+        return Command(
+            'get_metrics_by_filter',
+            ObjectSchema(true)
+                .withOptionalProperty('filter', FilterParamsSchema())
+                .withOptionalProperty('paging', PagingParamsSchema()),
+            (String correlationId, Parameters  args) async {
+                var filter = FilterParams.fromValue(args.get('filter'));
+                var paging = PagingParams.fromValue(args.get('paging'));
 
-//     private makeGetMetricsByFilterCommand(): ICommand {
-//         return new Command(
-//             "get_metrics_by_filter",
-//             new ObjectSchema(true)
-//                 .withOptionalProperty("filter", new FilterParamsSchema())
-//                 .withOptionalProperty("paging", new PagingParamsSchema()),
-//             (String correlationId, args: Parameters, callback: (err: any, result: any) => void) => {
-//                 let filter = FilterParams.fromValue(args.get("filter"));
-//                 let paging = PagingParams.fromValue(args.get("paging"));
+                return await _controller.getMetricsByFilter(correlationId, filter, paging);
+            });
+    }
 
-//                 this._controller.getMetricsByFilter(correlationId, filter, paging, callback);
-//             });
-//     }
+    ICommand _makeUpdateMetricCommand() {
+        return Command(
+            'update_metric',
+            ObjectSchema(true)
+                .withRequiredProperty('update', MetricUpdateV1Schema())
+                .withOptionalProperty('max_time_horizon', TypeCode.Long),
+            (String correlationId, Parameters  args) async {
+                var update = args.getAsObject('update');
+                var maxTimeHorizon = args.getAsIntegerWithDefault('max_time_horizon', TimeHorizonV1.Hour);
+                await _controller.updateMetric(correlationId, update, maxTimeHorizon);
+                return null;
+            });
+    }
 
-//     private makeUpdateMetricCommand(): ICommand {
-//         return new Command(
-//             "update_metric",
-//             new ObjectSchema(true)
-//                 .withRequiredProperty("update", new MetricUpdateV1Schema())
-//                 .withOptionalProperty("max_time_horizon", TypeCode.Long),
-//             (String correlationId, args: Parameters, callback: (err: any, result: any) => void) => {
-//                 let update = args.getAsObject("update");
-//                 let maxTimeHorizon = args.getAsIntegerWithDefault("max_time_horizon", TimeHorizonV1.Hour);
-
-//                 this._controller.updateMetric(correlationId, update, maxTimeHorizon, (err) => {
-//                     callback(err, null);
-//                 });
-//             });
-//     }
-
-//     private makeUpdateMetricsCommand(): ICommand {
-//         return new Command(
-//             "update_metrics",
-//             new ObjectSchema(true)
-//                 .withRequiredProperty("updates", new ArraySchema(new MetricUpdateV1Schema()))
-//                 .withOptionalProperty("max_time_horizon", TypeCode.Long),
-//             (String correlationId, args: Parameters, callback: (err: any, result: any) => void) => {
-//                 let updates = args.getAsArray("updates");
-//                 let maxTimeHorizon = args.getAsIntegerWithDefault("max_time_horizon", TimeHorizonV1.Hour);
-
-//                 this._controller.updateMetrics(correlationId, updates, maxTimeHorizon, (err) => {
-//                     callback(err, null);
-//                 });
-//             });
-//     }
-// }
+    ICommand _makeUpdateMetricsCommand() {
+        return Command(
+            'update_metrics',
+            ObjectSchema(true)
+                .withRequiredProperty('updates', ArraySchema(MetricUpdateV1Schema()))
+                .withOptionalProperty('max_time_horizon', TypeCode.Long),
+            (String correlationId, Parameters  args, ) async {
+                var updates = List<MetricUpdateV1>.from(args.getAsArray('updates').innerValue());
+                var maxTimeHorizon = args.getAsIntegerWithDefault('max_time_horizon', TimeHorizonV1.Hour);
+                await _controller.updateMetrics(correlationId, updates, maxTimeHorizon);
+                return null;
+            });
+    }
+}
 

@@ -4,3 +4,6 @@ export './IMetricsPersistence.dart';
 export './MetricsMemoryPersistence.dart';
 export './MetricsFilePersistence.dart';
 export './MetricsMongoDbPersistence.dart';
+export './TimeParser.dart';
+export './TimeIndexComposer.dart';
+export './TimeRangeComposer.dart';

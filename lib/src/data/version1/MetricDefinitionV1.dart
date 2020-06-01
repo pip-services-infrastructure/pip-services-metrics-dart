@@ -1,7 +1,7 @@
 
-// export class MetricDefinitionV1 {
-//     public name: string;
-//     public dimension1: string[];
-//     public dimension2: string[];
-//     public dimension3: string[];
-// }
+class MetricDefinitionV1 {
+    String name;
+    List<String> dimension1;
+    List<String> dimension2;
+    List<String> dimension3;
+}

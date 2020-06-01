@@ -1,14 +1,14 @@
-﻿// import { CommandSet } from 'pip-services3-commons-node';
-// import { ICommand } from 'pip-services3-commons-node';
-// import { Command } from 'pip-services3-commons-node';
-// import { ObjectSchema } from 'pip-services3-commons-node'
-// import { FilterParamsSchema } from 'pip-services3-commons-node';
-// import { PagingParamsSchema } from 'pip-services3-commons-node';
-// import { FilterParams } from 'pip-services3-commons-node';
-// import { PagingParams } from 'pip-services3-commons-node';
-// import { TypeCode } from 'pip-services3-commons-node';
-// import { ArraySchema } from 'pip-services3-commons-node';
-// import { Parameters } from 'pip-services3-commons-node';
+﻿// import { CommandSet } from 'package:pip_services3_commons-node';
+// import { ICommand } from 'package:pip_services3_commons-node';
+// import { Command } from 'package:pip_services3_commons-node';
+// import { ObjectSchema } from 'package:pip_services3_commons-node'
+// import { FilterParamsSchema } from 'package:pip_services3_commons-node';
+// import { PagingParamsSchema } from 'package:pip_services3_commons-node';
+// import { FilterParams } from 'package:pip_services3_commons-node';
+// import { PagingParams } from 'package:pip_services3_commons-node';
+// import { TypeCode } from 'package:pip_services3_commons-node';
+// import { ArraySchema } from 'package:pip_services3_commons-node';
+// import { Parameters } from 'package:pip_services3_commons-node';
 
 // import { IMetricsController } from './IMetricsController';
 // import { MetricUpdateV1Schema } from '../data/version1/MetricUpdateV1Schema';
@@ -35,7 +35,7 @@
 //         return new Command(
 //             "get_metric_definitions",
 //             new ObjectSchema(),
-//             (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
+//             (String correlationId, args: Parameters, callback: (err: any, result: any) => void) => {
 //                 this._controller.getMetricDefinitions(correlationId, callback);
 //             });
 //     }
@@ -45,7 +45,7 @@
 //             "get_metric_definition_by_name",
 //             new ObjectSchema()
 //                 .withOptionalProperty("name", TypeCode.String),
-//             (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
+//             (String correlationId, args: Parameters, callback: (err: any, result: any) => void) => {
 //                 let name = args.getAsString("name");
 
 //                 this._controller.getMetricDefinitionByName(correlationId, name, callback);
@@ -58,7 +58,7 @@
 //             new ObjectSchema(true)
 //                 .withOptionalProperty("filter", new FilterParamsSchema())
 //                 .withOptionalProperty("paging", new PagingParamsSchema()),
-//             (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
+//             (String correlationId, args: Parameters, callback: (err: any, result: any) => void) => {
 //                 let filter = FilterParams.fromValue(args.get("filter"));
 //                 let paging = PagingParams.fromValue(args.get("paging"));
 
@@ -72,7 +72,7 @@
 //             new ObjectSchema(true)
 //                 .withRequiredProperty("update", new MetricUpdateV1Schema())
 //                 .withOptionalProperty("max_time_horizon", TypeCode.Long),
-//             (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
+//             (String correlationId, args: Parameters, callback: (err: any, result: any) => void) => {
 //                 let update = args.getAsObject("update");
 //                 let maxTimeHorizon = args.getAsIntegerWithDefault("max_time_horizon", TimeHorizonV1.Hour);
 
@@ -88,7 +88,7 @@
 //             new ObjectSchema(true)
 //                 .withRequiredProperty("updates", new ArraySchema(new MetricUpdateV1Schema()))
 //                 .withOptionalProperty("max_time_horizon", TypeCode.Long),
-//             (correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
+//             (String correlationId, args: Parameters, callback: (err: any, result: any) => void) => {
 //                 let updates = args.getAsArray("updates");
 //                 let maxTimeHorizon = args.getAsIntegerWithDefault("max_time_horizon", TimeHorizonV1.Hour);
 

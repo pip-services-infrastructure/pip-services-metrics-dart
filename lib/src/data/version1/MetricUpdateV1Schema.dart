@@ -1,19 +1,18 @@
-// import { ObjectSchema } from 'pip-services3-commons-node';
-// import { TypeCode } from 'pip-services3-commons-node';
+import 'package:pip_services3_commons/pip_services3_commons.dart';
 
-// export class MetricUpdateV1Schema extends ObjectSchema {
-//     public constructor() {
-//         super();
-//         this.withRequiredProperty("name", TypeCode.String);
-//         this.withRequiredProperty("year", TypeCode.Integer);
-//         this.withRequiredProperty("month", TypeCode.Integer);
-//         this.withRequiredProperty("day", TypeCode.Integer);
-//         this.withRequiredProperty("hour", TypeCode.Integer);
-//         this.withOptionalProperty("minute", TypeCode.Integer);
-//         this.withOptionalProperty("dimension1", TypeCode.String);
-//         this.withOptionalProperty("dimension2", TypeCode.String);
-//         this.withOptionalProperty("dimension3", TypeCode.String);
-//         this.withRequiredProperty("value", TypeCode.Float);
-//     }
-// }
+class MetricUpdateV1Schema extends ObjectSchema {
+     MetricUpdateV1Schema():super() {
+        
+        withRequiredProperty('name', TypeCode.String);
+        withRequiredProperty('year', TypeCode.Integer);
+        withRequiredProperty('month', TypeCode.Integer);
+        withRequiredProperty('day', TypeCode.Integer);
+        withRequiredProperty('hour', TypeCode.Integer);
+        withOptionalProperty('minute', TypeCode.Integer);
+        withOptionalProperty('dimension1', TypeCode.String);
+        withOptionalProperty('dimension2', TypeCode.String);
+        withOptionalProperty('dimension3', TypeCode.String);
+        withRequiredProperty('value', TypeCode.Float);
+    }
+}
 

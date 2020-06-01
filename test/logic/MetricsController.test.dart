@@ -2,11 +2,11 @@
 // let async = require('async');
 // let assert = require('chai').assert;
 
-// import { ConfigParams } from 'pip-services3-commons-node';
-// import { Descriptor } from 'pip-services3-commons-node';
-// import { References } from 'pip-services3-commons-node';
-// import { FilterParams } from 'pip-services3-commons-node';
-// import { PagingParams } from 'pip-services3-commons-node';
+// import { ConfigParams } from 'package:pip_services3_commons-node';
+// import { Descriptor } from 'package:pip_services3_commons-node';
+// import { References } from 'package:pip_services3_commons-node';
+// import { FilterParams } from 'package:pip_services3_commons-node';
+// import { PagingParams } from 'package:pip_services3_commons-node';
 
 // import { MetricsMemoryPersistence } from '../../src/persistence/MetricsMemoryPersistence';
 // import { MetricsController } from '../../src/logic/MetricsController';

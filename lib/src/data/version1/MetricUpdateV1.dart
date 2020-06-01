@@ -1,13 +1,13 @@
 
-// export class MetricUpdateV1 {
-//     public name: string;
-//     public year: number;
-//     public month: number;
-//     public day: number;
-//     public hour: number;
-//     public minute?: number;
-//     public dimension1?: string;
-//     public dimension2?: string;
-//     public dimension3?: string;
-//     public value: number;
-// }
+class MetricUpdateV1 {
+    String  name;
+    int year;
+    int  month;
+    int day;
+    int hour;
+    int minute; // not requred
+    String dimension1; // not requred
+    String dimension2; // not requred
+    String dimension3; // not requred
+    double value;
+}

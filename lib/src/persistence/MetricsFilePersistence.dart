@@ -1,23 +1,21 @@
-﻿// import { ConfigParams } from 'pip-services3-commons-node';
-// import { JsonFilePersister } from 'pip-services3-data-node';
+﻿import 'package:pip_services3_commons/pip_services3_commons.dart';
+import 'package:pip_services3_data/pip_services3_data.dart';
 
-// import { MetricsMemoryPersistence } from './MetricsMemoryPersistence';
-// import { MetricRecord } from './MetricRecord';
+import './MetricsMemoryPersistence.dart';
+import './MetricRecord.dart';
 
-// export class MetricsFilePersistence extends MetricsMemoryPersistence {
-//     protected _persister: JsonFilePersister<MetricRecord>;
+class MetricsFilePersistence extends MetricsMemoryPersistence {
+  JsonFilePersister<MetricRecord> persister;
 
-//     constructor(path?: string) {
-//         super();
-//         this._persister = new JsonFilePersister<MetricRecord>(path);
-//         this._loader = this._persister;
-//         this._saver = this._persister;
-//     }
+  MetricsFilePersistence([String path]) : super() {
+    persister = JsonFilePersister<MetricRecord>(path);
+    loader = persister;
+    saver = persister;
+  }
 
-//     public configure(config: ConfigParams): void {
-//         super.configure(config);
-
-//         this._persister.configure(config);
-//     }
-// }
-
+  @override
+  void configure(ConfigParams config) {
+    super.configure(config);
+    persister.configure(config);
+  }
+}

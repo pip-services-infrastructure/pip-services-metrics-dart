@@ -1,12 +1,12 @@
 
-// export class MetricValueV1 {
-//     public year?: number;
-//     public month?: number;
-//     public day?: number;
-//     public hour?: number;
-//     public minute?: number;
-//     public count: number;
-//     public sum: number;
-//     public max: number;
-//     public min: number;
-// }
+class MetricValueV1 {
+    int year; // not requre
+    int month; // not requre
+    int  day; // not requre
+    int hour; // not requre
+    int minute; // not requre
+    int count;
+    double sum;
+    double max;
+    double min;
+}

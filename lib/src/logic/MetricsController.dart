@@ -1,16 +1,16 @@
 ﻿// let _ = require('lodash');
 // let async = require('async');
 
-// import { ConfigParams } from 'pip-services3-commons-node';
-// import { ICommandable } from 'pip-services3-commons-node';
-// import { IConfigurable } from 'pip-services3-commons-node';
-// import { IReferenceable } from 'pip-services3-commons-node'
-// import { DependencyResolver } from 'pip-services3-commons-node';
-// import { CommandSet } from 'pip-services3-commons-node';
-// import { IReferences } from 'pip-services3-commons-node';
-// import { FilterParams } from 'pip-services3-commons-node';
-// import { PagingParams } from 'pip-services3-commons-node';
-// import { DataPage } from 'pip-services3-commons-node';
+// import { ConfigParams } from 'package:pip_services3_commons-node';
+// import { ICommandable } from 'package:pip_services3_commons-node';
+// import { IConfigurable } from 'package:pip_services3_commons-node';
+// import { IReferenceable } from 'package:pip_services3_commons-node'
+// import { DependencyResolver } from 'package:pip_services3_commons-node';
+// import { CommandSet } from 'package:pip_services3_commons-node';
+// import { IReferences } from 'package:pip_services3_commons-node';
+// import { FilterParams } from 'package:pip_services3_commons-node';
+// import { PagingParams } from 'package:pip_services3_commons-node';
+// import { DataPage } from 'package:pip_services3_commons-node';
 
 // import { MetricDefinitionV1 } from '../data/version1/MetricDefinitionV1';
 // import { MetricUpdateV1 } from '../data/version1/MetricUpdateV1';
@@ -56,7 +56,7 @@
 //         return this._commandSet;
 //     }
 
-//     private getMetricDefinitionsWithName(correlationId: string, name: string,
+//     private getMetricDefinitionsWithName(String correlationId, name: string,
 //         callback: (err: any, items: MetricDefinitionV1[]) => void) {
 
 //         let filter = FilterParams.fromTuples(
@@ -118,19 +118,19 @@
 //         );
 //     }
 
-//     public getMetricDefinitions(correlationId: string,
+//     public getMetricDefinitions(String correlationId,
 //         callback: (err: any, items: MetricDefinitionV1[]) => void) {
 //         return this.getMetricDefinitionsWithName(correlationId, null, callback);
 //     }
 
-//     public getMetricDefinitionByName(correlationId: string, name: string,
+//     public getMetricDefinitionByName(String correlationId, name: string,
 //         callback: (err: any, item: MetricDefinitionV1) => void) {
 //         this.getMetricDefinitionsWithName(correlationId, name, (err, items) => {
 //             callback(err, items.length > 0 ? items[0] : null);
 //         });
 //     }
 
-//     public getMetricsByFilter(correlationId: string, filter: FilterParams, paging: PagingParams, callback: (err: any, page: DataPage<MetricValueSetV1>) => void) {
+//     public getMetricsByFilter(String correlationId, filter: FilterParams, paging: PagingParams, callback: (err: any, page: DataPage<MetricValueSetV1>) => void) {
 //         this._persistence.getPageByFilter(correlationId, filter, paging, (err, page) => {
 //             let timeHorizon = TimeHorizonConverter.fromString(filter.getAsNullableString("time_horizon"));
 //             let fromIndex = TimeIndexComposer.composeFromIndexFromFilter(timeHorizon, filter);
@@ -181,12 +181,12 @@
 //         });
 //     }
 
-//     public updateMetric(correlationId: string, update: MetricUpdateV1,
+//     public updateMetric(String correlationId, update: MetricUpdateV1,
 //         maxTimeHorizon: number, callback: (err: any) => void) {
 //         this._persistence.updateOne(correlationId, update, maxTimeHorizon, callback);
 //     }
 
-//     public updateMetrics(correlationId: string, updates: MetricUpdateV1[],
+//     public updateMetrics(String correlationId, updates: MetricUpdateV1[],
 //         maxTimeHorizon: number, callback: (err: any) => void) {
 //         this._persistence.updateMany(correlationId, updates, maxTimeHorizon, callback);
 //     }

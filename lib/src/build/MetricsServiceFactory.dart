@@ -1,27 +1,21 @@
-﻿// import { Factory } from 'pip-services3-components-node';
-// import { Descriptor } from 'pip-services3-commons-node';
+﻿// import 'package:pip_services3_components/pip_services3_components.dart';
+// import 'package:pip_services3_commons/pip_services3_commons.dart';
+// import 'package:pip_services_metrics/pip_services_metrics.dart';
 
-// import { MetricsMemoryPersistence } from '../persistence/MetricsMemoryPersistence';
-// import { MetricsFilePersistence } from '../persistence/MetricsFilePersistence';
-// import { MetricsMongoDbPersistence } from '../persistence/MetricsMongoDbPersistence';
-// import { MetricsController } from '../logic/MetricsController';
-// import { MetricsHttpServiceV1 } from '../services/version1/MetricsHttpServiceV1';
+// class MetricsServiceFactory extends Factory {
+//      static final descriptor = Descriptor('pip-services-metrics', 'factory', 'service', 'default', '1.0');
+//      static final MemoryPersistenceDescriptor = Descriptor('pip-services-metrics', 'persistence', 'memory', '*', '1.0');
+//      static final FilePersistenceDescriptor = Descriptor('pip-services-metrics', 'persistence', 'file', '*', '1.0');
+//      static final MongoDbPersistenceDescriptor = Descriptor('pip-services-metrics', 'persistence', 'mongodb', '*', '1.0');
+//      static final ControllerDescriptor = Descriptor('pip-services-metrics', 'controller', 'default', '*', '1.0');
+//      static final HttpServiceDescriptor = Descriptor('pip-services-metrics', 'service', 'http', '*', '1.0');
 
-// export class MetricsServiceFactory extends Factory {
-//     public Descriptor: Descriptor = new Descriptor("pip-services-metrics", "factory", "service", "default", "1.0");
-//     public MemoryPersistenceDescriptor: Descriptor = new Descriptor("pip-services-metrics", "persistence", "memory", "*", "1.0");
-//     public FilePersistenceDescriptor: Descriptor = new Descriptor("pip-services-metrics", "persistence", "file", "*", "1.0");
-//     public MongoDbPersistenceDescriptor: Descriptor = new Descriptor("pip-services-metrics", "persistence", "mongodb", "*", "1.0");
-//     public ControllerDescriptor: Descriptor = new Descriptor("pip-services-metrics", "controller", "default", "*", "1.0");
-//     public HttpServiceDescriptor: Descriptor = new Descriptor("pip-services-metrics", "service", "http", "*", "1.0");
-
-//     public constructor() {
-//         super();
-//         this.registerAsType(this.MemoryPersistenceDescriptor, MetricsMemoryPersistence);
-//         this.registerAsType(this.FilePersistenceDescriptor, MetricsFilePersistence);
-//         this.registerAsType(this.MongoDbPersistenceDescriptor, MetricsMongoDbPersistence);
-//         this.registerAsType(this.ControllerDescriptor, MetricsController);
-//         this.registerAsType(this.HttpServiceDescriptor, MetricsHttpServiceV1);
+//      MetricsServiceFactory(): super() {
+//         registerAsType(MetricsServiceFactory.MemoryPersistenceDescriptor, MetricsMemoryPersistence);
+//         registerAsType(MetricsServiceFactory.FilePersistenceDescriptor, MetricsFilePersistence);
+//         registerAsType(MetricsServiceFactory.MongoDbPersistenceDescriptor, MetricsMongoDbPersistence);
+//         registerAsType(MetricsServiceFactory.ControllerDescriptor, MetricsController);
+//         registerAsType(MetricsServiceFactory.HttpServiceDescriptor, MetricsHttpServiceV1);
 //     }
 // }
 

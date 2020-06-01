@@ -1,9 +1,9 @@
 
-// export class TimeHorizonV1 {
-//     public static Total: number = 0;
-//     public static Year: number = 1;
-//     public static Month: number = 2;
-//     public static Day: number = 3;
-//     public static Hour: number = 4;
-//     public static Minute: number = 5;
-// }
+class TimeHorizonV1 {
+     static const Total = 0;
+     static const Year = 1;
+     static const Month = 2;
+     static const Day = 3;
+     static const Hour = 4;
+     static const Minute = 5;
+}

@@ -1,10 +1,11 @@
-﻿// import { Descriptor } from 'pip-services3-commons-node';
-// import { CommandableHttpService } from 'pip-services3-rpc-node';
+﻿import 'package:pip_services3_commons/pip_services3_commons.dart';
+import 'package:pip_services3_rpc/pip_services3_rpc.dart';
 
-// export class MetricsHttpServiceV1 extends CommandableHttpService {
-//     public constructor() {
-//         super("v1/metrics");
-//         this._dependencyResolver.put("controller", new Descriptor("pip-services-metrics", "controller", "default", "*", "1.0"));
-//     }
-// }
-
+class MetricsHttpServiceV1 extends CommandableHttpService {
+  MetricsHttpServiceV1() : super('v1/metrics') {
+    dependencyResolver.put(
+        'controller',
+        Descriptor(
+            'pip-services-metrics', 'controller', 'default', '*', '1.0'));
+  }
+}

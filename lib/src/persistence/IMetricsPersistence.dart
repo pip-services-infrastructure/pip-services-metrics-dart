@@ -1,15 +1,15 @@
-﻿// import { FilterParams } from 'pip-services3-commons-node';
-// import { PagingParams } from 'pip-services3-commons-node';
-// import { DataPage } from 'pip-services3-commons-node';
+﻿
+import 'dart:async';
+import 'package:pip_services3_commons/pip_services3_commons.dart';
 
-// import { MetricUpdateV1 } from '../data/version1/MetricUpdateV1';
-// import { MetricRecord } from './MetricRecord';
+import '../data/version1/MetricUpdateV1.dart';
+import './MetricRecord.dart';
 
-// export interface IMetricsPersistence {
-//     getPageByFilter(correlationId: string, filter: FilterParams, paging: PagingParams, callback: (err: any, page: DataPage<MetricRecord>) => void): void;
-//     set(correlationId: string, item: MetricRecord, callback?: (err: any, item: MetricRecord) => void): void;
-//     updateOne(correlationId: string, update: MetricUpdateV1, maxTimeHorizon: number, callback?: (err: any) => void): void;
-//     updateMany(correlationId: string, updates: MetricUpdateV1[], maxTimeHorizon: number, callback?: (err: any) => void): void;
-//     deleteByFilter(correlationId: string, filter: FilterParams, callback?: (err: any) => void): void;
-// }
+ abstract class IMetricsPersistence {
+    Future<DataPage<MetricRecord>> getPageByFilter(String correlationId, FilterParams filter , PagingParams paging);
+    Future<MetricRecord> set(String correlationId, MetricRecord item);
+    Future updateOne(String correlationId, MetricUpdateV1 update, int maxTimeHorizon);
+    Future updateMany(String correlationId, List<MetricUpdateV1> updates, int maxTimeHorizon);
+    Future deleteByFilter(String correlationId, filter); // FilterParams
+}
 

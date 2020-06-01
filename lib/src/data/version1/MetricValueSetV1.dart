@@ -1,12 +1,12 @@
 
-// import { MetricValueV1 } from './MetricValueV1';
-// import { TimeHorizonV1 } from './TimeHorizonV1';
+import './MetricValueV1.dart';
+import  './TimeHorizonV1.dart';
 
-// export class MetricValueSetV1 {
-//     public name: string;
-//     public time_horizon: number;
-//     public dimension1: string;
-//     public dimension2: string;
-//     public dimension3: string;
-//     public values: MetricValueV1[];
-// }
+class MetricValueSetV1 {
+    String name;
+    int time_horizon;
+    String dimension1;
+    String dimension2;
+    String dimension3;
+    List<MetricValueV1> values;
+}

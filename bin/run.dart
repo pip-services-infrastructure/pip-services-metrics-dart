@@ -1,9 +1,11 @@
-// var MetricsProcess = require('../obj/src/container/MetricsProcess').MetricsProcess;
+import 'package:pip_services_metrics/pip_services_metrics.dart';
 
-// try {
-//     var proc = new MetricsProcess();
-//     proc._configPath = "./config/config.yml";
-//     proc.run(process.argv);
-// } catch (ex) {
-//     console.error(ex);
-// }
+void main(List<String> argument){
+try {
+    var proc = MetricsProcess();
+    proc.configPath = './config/config.yml';
+    proc.run(argument);
+} catch (ex) {
+    print(ex);
+}
+}

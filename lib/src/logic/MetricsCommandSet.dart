@@ -22,8 +22,8 @@ class MetricsCommandSet extends CommandSet {
         return Command(
             'get_metric_definitions',
             ObjectSchema(),
-            (String correlationId, Parameters args) async {
-                return await _controller.getMetricDefinitions(correlationId);
+            (String correlationId, Parameters args)  {
+                return  _controller.getMetricDefinitions(correlationId);
             });
     }
 
@@ -32,9 +32,9 @@ class MetricsCommandSet extends CommandSet {
             'get_metric_definition_by_name',
             ObjectSchema()
                 .withOptionalProperty('name', TypeCode.String),
-            (String correlationId, Parameters  args) async {
+            (String correlationId, Parameters  args)  {
                 var name = args.getAsString('name');
-                return await _controller.getMetricDefinitionByName(correlationId, name);
+                return  _controller.getMetricDefinitionByName(correlationId, name);
             });
     }
 
@@ -44,11 +44,11 @@ class MetricsCommandSet extends CommandSet {
             ObjectSchema(true)
                 .withOptionalProperty('filter', FilterParamsSchema())
                 .withOptionalProperty('paging', PagingParamsSchema()),
-            (String correlationId, Parameters  args) async {
+            (String correlationId, Parameters  args)  {
                 var filter = FilterParams.fromValue(args.get('filter'));
                 var paging = PagingParams.fromValue(args.get('paging'));
 
-                return await _controller.getMetricsByFilter(correlationId, filter, paging);
+                return  _controller.getMetricsByFilter(correlationId, filter, paging);
             });
     }
 
@@ -58,10 +58,10 @@ class MetricsCommandSet extends CommandSet {
             ObjectSchema(true)
                 .withRequiredProperty('update', MetricUpdateV1Schema())
                 .withOptionalProperty('max_time_horizon', TypeCode.Long),
-            (String correlationId, Parameters  args) async {
-                var update = args.getAsObject('update');
+            (String correlationId, Parameters  args)  {
+                var update = MetricUpdateV1.fromJson(args.getAsObject('update'));
                 var maxTimeHorizon = args.getAsIntegerWithDefault('max_time_horizon', TimeHorizonV1.Hour);
-                await _controller.updateMetric(correlationId, update, maxTimeHorizon);
+                 _controller.updateMetric(correlationId, update, maxTimeHorizon);
                 return null;
             });
     }
@@ -72,10 +72,10 @@ class MetricsCommandSet extends CommandSet {
             ObjectSchema(true)
                 .withRequiredProperty('updates', ArraySchema(MetricUpdateV1Schema()))
                 .withOptionalProperty('max_time_horizon', TypeCode.Long),
-            (String correlationId, Parameters  args, ) async {
-                var updates = List<MetricUpdateV1>.from(args.getAsArray('updates').innerValue());
+            (String correlationId, Parameters  args, )  {
+                var updates = List<MetricUpdateV1>.from(args.getAsArray('updates').innerValue().map((item)=>MetricUpdateV1.fromJson(item)));
                 var maxTimeHorizon = args.getAsIntegerWithDefault('max_time_horizon', TimeHorizonV1.Hour);
-                await _controller.updateMetrics(correlationId, updates, maxTimeHorizon);
+                 _controller.updateMetrics(correlationId, updates, maxTimeHorizon);
                 return null;
             });
     }

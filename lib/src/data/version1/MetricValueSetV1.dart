@@ -23,7 +23,8 @@ class MetricValueSetV1 {
         'time_horizon':time_horizon,
         'dimension1':dimension1,
         'dimension2':dimension2,
-        'dimension3':dimension3
+        'dimension3':dimension3,
+        'values':values
       };
     }
 
@@ -33,5 +34,7 @@ class MetricValueSetV1 {
         dimension1 = json['dimension1'];
         dimension2 = json['dimension2'];
         dimension3 = json['dimension3'];
+        var items = json['values'];
+        values = List<MetricValueV1>.from(items.map((itemJson) => MetricValueV1.fromJson(itemJson)));
     }
 }

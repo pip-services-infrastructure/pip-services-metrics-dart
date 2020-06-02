@@ -11,6 +11,14 @@ class MetricUpdateV1 {
     String dimension3; // not requred
     double value;
 
+    MetricUpdateV1();
+
+    factory MetricUpdateV1.fromJson(Map<String, dynamic> json){
+        var c = MetricUpdateV1();
+        c.fromJson(json);
+        return c;
+    }
+
     Map<String, dynamic> toJson(){
       return <String, dynamic>{
         'name':name,
@@ -21,7 +29,8 @@ class MetricUpdateV1 {
         'minute':minute,
         'dimension1':dimension1,
         'dimension2':dimension2,
-        'dimension3':dimension3
+        'dimension3':dimension3,
+        'value':value
       };
     }
 
@@ -35,5 +44,6 @@ class MetricUpdateV1 {
         dimension1 = json['dimension1'];
         dimension2 = json['dimension2'];
         dimension3 = json['dimension3'];
+        value = json['value'];
     }
 }

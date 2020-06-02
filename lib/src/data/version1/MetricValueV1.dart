@@ -9,6 +9,14 @@ class MetricValueV1 {
   double max;
   double min;
 
+  MetricValueV1();
+
+  factory MetricValueV1.fromJson(Map<String, dynamic> json){
+    var c = MetricValueV1();
+    c.fromJson(json);
+    return c;
+  }
+
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'year': year,

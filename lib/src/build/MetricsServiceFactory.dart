@@ -13,7 +13,7 @@ class MetricsServiceFactory extends Factory {
      MetricsServiceFactory(): super() {
         registerAsType(MetricsServiceFactory.MemoryPersistenceDescriptor, MetricsMemoryPersistence);
         registerAsType(MetricsServiceFactory.FilePersistenceDescriptor, MetricsFilePersistence);
-        //registerAsType(MetricsServiceFactory.MongoDbPersistenceDescriptor, MetricsMongoDbPersistence);
+        registerAsType(MetricsServiceFactory.MongoDbPersistenceDescriptor, MetricsMongoDbPersistence);
         registerAsType(MetricsServiceFactory.ControllerDescriptor, MetricsController);
         registerAsType(MetricsServiceFactory.HttpServiceDescriptor, MetricsHttpServiceV1);
     }

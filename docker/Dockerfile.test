@@ -1,36 +1,15 @@
-FROM pipdevs/node:8.4.0
+# Start with the Dart image
+FROM google/dart:2.7.2
 
-# Install python
-RUN apk add --update \
-    python \
-    python-dev \
-    py-pip \
-    build-base \
-  && pip install virtualenv \
-  && rm -rf /var/cache/apk/*
-
-# Install git and ssh
-RUN apk update && apk add git && apk add openssh
-
-# Copy local ssh keys
-COPY docker/id_rsa /root/.ssh/
-
-# Setup ssh access to github repositories
-RUN chmod 600 /root/.ssh/id_rsa* \
-    && ssh-keyscan github.com >> ~/.ssh/known_hosts \
-    && ssh-keyscan gitlab.com >> ~/.ssh/known_hosts 
-
-# Set working directory
+# Set a working directory
 WORKDIR /app
 
-# Copy project file
-COPY package.json .
-
-# Install ALL node_modules, including 'devDependencies'
-RUN npm install
-
-# Copy entire project
+# Copy the entire project
 COPY . .
 
-# Remove npmrc file because env variable NPM_TOKEN is set for travis projects
-RUN rm -f ./.npmrc
+# Install all dependencies
+RUN pub get
+RUN pub get --offline
+
+# Specify the command from running tests
+CMD pub run test

@@ -7,13 +7,13 @@
 - descriptor: "pip-services:counters:log:default:1.0"
   level: {{LOG_LEVEL}}{{^LOG_LEVEL}}info{{/LOG_LEVEL}}
 
-{{#if ELASTICSEARCH_LOGGER_ENABLED}}
+{{#ELASTICSEARCH_LOGGER_ENABLED}}
 # Elastic search logger vesion 1.0
 - descriptor: "pip-services3:logger:elasticsearch:default:1.0"
   level: {{LOG_LEVEL}}{{^LOG_LEVEL}}info{{/LOG_LEVEL}}
   connection:
     uri: {{ELASTICSEARCH_SERVICE_URI}}{{^ELASTICSEARCH_SERVICE_URI}}http://localhost:9200{{/ELASTICSEARCH_SERVICE_URI}}
-{{/if}}
+{{/ELASTICSEARCH_LOGGER_ENABLED}}
 
 # AppInsights logger version 1.0
 #- descriptor: "pip-services:logger:app-insights:default:1.0"
@@ -21,7 +21,7 @@
 #  credential:
 #    access_key: {{APP_INSIGHTS_INSTRUMENTATION_KEY}}
 
-  {{#if PROMETHEUS_ENABLED}}
+  {{#PROMETHEUS_ENABLED}}
 # Prometheus counters vesion 1.0
 - descriptor: "pip-services:counters:prometheus:default:1.0"
   level: {{LOG_LEVEL}}{{^LOG_LEVEL}}info{{/LOG_LEVEL}}
@@ -34,26 +34,26 @@
     protocol: "http"
     host: {{PROMETHEUS_SERVICE_HOST}}{{^PROMETHEUS_SERVICE_HOST}}0.0.0.0{{/PROMETHEUS_SERVICE_HOST}}
     port: {{PROMETHEUS_SERVICE_PORT}}{{^PROMETHEUS_SERVICE_PORT}}8082{{/PROMETHEUS_SERVICE_PORT}}
-{{/if}}
+{{/PROMETHEUS_ENABLED}}
 
-{{#if MEMORY_ENABLED}}
+{{#MEMORY_ENABLED}}
 # In-memory persistence. Use only for testing!
 - descriptor: "pip-services-metrics:persistence:memory:default:1.0"
-{{/if}}
+{{/MEMORY_ENABLED}}
 
-{{#if FILE_ENABLED}}
+{{#FILE_ENABLED}}
 # File persistence. Use it for testing of for simple standalone deployments
 - descriptor: "pip-services-metrics:persistence:file:default:1.0"
   path: {{WEXXLE_METRICS_FILE_PATH}}{{^WEXXLE_METRICS_FILE_PATH}}"../data/metrics.json"{{/WEXXLE_METRICS_FILE_PATH}}
-{{/if}}
+{{/FILE_ENABLED}}
 
-{{#if MONGO_ENABLED}}
+{{#MONGO_ENABLED}}
 # MongoDB Persistence
 - descriptor: "pip-services-metrics:persistence:mongodb:default:1.0"
   collection: {{MONGO_COLLECTION}}{{^MONGO_COLLECTION}}metrics{{/MONGO_COLLECTION}}
   connection:
     uri: {{MONGO_SERVICE_URI}}{{^MONGO_SERVICE_URI}}mongodb://mongo:27017/wexxle{{/MONGO_SERVICE_URI}}
-{{/if}}
+{{/MONGO_ENABLED}}
 
 {{^MEMORY_ENABLED}}{{^FILE_ENABLED}}{{^MONGO_ENABLED}}
 # Default in-memory persistence

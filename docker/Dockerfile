@@ -1,43 +1,25 @@
-FROM pipdevs/node:8.4.0
+# Start with the Dart image
+FROM google/dart:2.7.2
 
-# Install python
-RUN apk add --update \
-    python \
-    python-dev \
-    py-pip \
-    build-base \
-  && pip install virtualenv \
-  && rm -rf /var/cache/apk/*
-
-# Install git and ssh
-RUN apk update && apk add git && apk add openssh
-
-# Copy local ssh keys
-COPY docker/id_rsa /root/.ssh/
-
-# Setup ssh access to github repositories
-RUN chmod 600 /root/.ssh/id_rsa* \
-    && ssh-keyscan github.com >> ~/.ssh/known_hosts \
-    && ssh-keyscan gitlab.com >> ~/.ssh/known_hosts 
-
-# Set working directory
+# Set a working directory
 WORKDIR /app
 
-# Copy project file
-COPY package.json .
-
-# Install ALL node_modules, including 'devDependencies'
-RUN npm install
-
-# Copy entire project
+# Copy the entire project
 COPY . .
 
-# set default environment variables
-ENV MONGO_SERVICE_URI ""
-ENV MONGO_SERVICE_HOST mongo
-ENV MONGO_SERVICE_PORT 27017
-ENV MONGO_DB app
+# Install all dependencies
+RUN pub get
+RUN pub get --offline
 
-EXPOSE 8080
+# Set the required environment variables
+ENV HTTP_PORT=8080
+ENV MONGO_SERVICE_HOST=
+ENV MONGO_SERVICE_PORT=27017
+ENV MONGO_SERVICE_URI=
 
-ENTRYPOINT [ "node", "./bin/run.js" ]
+# Expose the HTTP port
+EXPOSE "8080:8080"
+
+# Specify the command for running the service
+CMD []
+ENTRYPOINT ["/usr/bin/dart", "./bin/run.dart"]

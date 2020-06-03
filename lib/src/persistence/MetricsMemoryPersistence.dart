@@ -119,7 +119,7 @@ class MetricsMemoryPersistence
         item.d1 = update.dimension1;
         item.d2 = update.dimension2;
         item.d3 = update.dimension3;
-        item.val = MetricRecordValueMap();
+        item.val = <String, MetricRecordValue>{};
 
         items.add(item);
       } else {
@@ -164,7 +164,7 @@ class MetricsMemoryPersistence
   /// correlationId String
   /// filter FilterParams
    @override
-  Future deleteByFilter(String correlationId, filter) {
-    return super.deleteByFilter(correlationId, _composeFilter(filter));
+  Future deleteByFilter(String correlationId, FilterParams filter) {
+    return super.deleteByFilterEx(correlationId, _composeFilter(filter));
   }
 }

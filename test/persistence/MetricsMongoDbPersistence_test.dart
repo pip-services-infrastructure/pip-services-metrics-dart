@@ -6,52 +6,52 @@ import './MetricsPersistenceFixture.dart';
 
 void main() {
   group('MetricsMongoDbPersistence', () {
-    // MetricsMongoDbPersistence persistence;
-    // MetricsPersistenceFixture fixture;
+    MetricsMongoDbPersistence persistence;
+    MetricsPersistenceFixture fixture;
 
-    // var mongoUri = Platform.environment['MONGO_SERVICE_URI'];
-    // var mongoHost = Platform.environment['MONGO_SERVICE_HOST'] ?? 'localhost';
-    // var mongoPort = Platform.environment['MONGO_SERVICE_PORT'] ?? 27017;
-    // var mongoDatabase = Platform.environment['MONGO_SERVICE_DB'] ?? 'test';
+    var mongoUri = Platform.environment['MONGO_SERVICE_URI'];
+    var mongoHost = Platform.environment['MONGO_SERVICE_HOST'] ?? 'localhost';
+    var mongoPort = Platform.environment['MONGO_SERVICE_PORT'] ?? 27017;
+    var mongoDatabase = Platform.environment['MONGO_SERVICE_DB'] ?? 'test';
 
-    // // Exit if mongo connection is not set
-    // if (mongoUri == '' && mongoHost == '') {
-    //   return;
-    // }
+    // Exit if mongo connection is not set
+    if (mongoUri == '' && mongoHost == '') {
+      return;
+    }
 
-    // setUp(() async {
-    //   persistence = MetricsMongoDbPersistence();
-    //   persistence.configure(ConfigParams.fromTuples([
-    //     'connection.uri',
-    //     mongoUri,
-    //     'connection.host',
-    //     mongoHost,
-    //     'connection.port',
-    //     mongoPort,
-    //     'connection.database',
-    //     mongoDatabase
-    //   ]));
+    setUp(() async {
+      persistence = MetricsMongoDbPersistence();
+      persistence.configure(ConfigParams.fromTuples([
+        'connection.uri',
+        mongoUri,
+        'connection.host',
+        mongoHost,
+        'connection.port',
+        mongoPort,
+        'connection.database',
+        mongoDatabase
+      ]));
 
-    //   fixture = MetricsPersistenceFixture(persistence);
+      fixture = MetricsPersistenceFixture(persistence);
 
-    //   await persistence.open(null);
-    //   await persistence.clear(null);
-    // });
+      await persistence.open(null);
+      await persistence.clear(null);
+    });
 
-    // tearDown(() async {
-    //   await persistence.close(null);
-    // });
+    tearDown(() async {
+      await persistence.close(null);
+    });
 
-    // test('Simple Metrics', () async {
-    //   await fixture.testSimpleMetrics();
-    // });
+    test('Simple Metrics', () async {
+      await fixture.testSimpleMetrics();
+    });
 
-    // test('Metric With Dimensions', () async {
-    //   await fixture.testMetricWithDimensions();
-    // });
+    test('Metric With Dimensions', () async {
+      await fixture.testMetricWithDimensions();
+    });
 
-    // test('Get Multiple Metrics', () async {
-    //   await fixture.testGetMultipleMetrics();
-    // });
+    test('Get Multiple Metrics', () async {
+      await fixture.testGetMultipleMetrics();
+    });
   });
 }

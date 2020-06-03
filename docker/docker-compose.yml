@@ -7,8 +7,8 @@ services:
       context: ..
       dockerfile: docker/Dockerfile
     image: ${IMAGE:-pipdevs/app}
-    links:
-      - mongo
+    # links:
+    #   - mongo
     environment:
       - MONGO_SERVICE_URI=
       - MONGO_SERVICE_HOST=mongo
@@ -16,7 +16,9 @@ services:
       - MONGO_DB=app
       - HTTP_ENABLED=true
     ports:
-      - "8080:8080"
+      - "8080:8080"  
+    depends_on:
+      - mongo
 
   mongo:
     image: mongo:latest

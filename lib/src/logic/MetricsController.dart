@@ -72,13 +72,13 @@ class MetricsController
           definitions[record.name] = definition;
         }
 
-        if (record.d1 != null && definition.dimension1.indexOf(record.d1) < 0) {
+        if (record.d1 != null && !definition.dimension1.contains(record.d1)) {
           definition.dimension1.add(record.d1);
         }
-        if (record.d2 != null && definition.dimension2.indexOf(record.d2) < 0) {
+        if (record.d2 != null && !definition.dimension2.contains(record.d2)) {
           definition.dimension2.add(record.d2);
         }
-        if (record.d3 != null && definition.dimension3.indexOf(record.d3) < 0) {
+        if (record.d3 != null && !definition.dimension3.contains(record.d3)) {
           definition.dimension3.add(record.d3);
         }
       }

@@ -5,10 +5,10 @@ class MetricUpdateV1 {
     int  month;
     int day;
     int hour;
-    int minute; // not requred
-    String dimension1; // not requred
-    String dimension2; // not requred
-    String dimension3; // not requred
+    int minute; 
+    String dimension1; 
+    String dimension2; 
+    String dimension3; 
     double value;
 
     MetricUpdateV1();

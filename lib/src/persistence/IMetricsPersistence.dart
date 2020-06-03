@@ -10,6 +10,6 @@ import './MetricRecord.dart';
     Future<MetricRecord> set(String correlationId, MetricRecord item);
     Future updateOne(String correlationId, MetricUpdateV1 update, int maxTimeHorizon);
     Future updateMany(String correlationId, List<MetricUpdateV1> updates, int maxTimeHorizon);
-    Future deleteByFilter(String correlationId, filter); // FilterParams
+    Future deleteByFilter(String correlationId, FilterParams filter);
 }
 

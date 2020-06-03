@@ -1,37 +1,6 @@
-﻿import 'dart:collection';
-import 'package:pip_services3_commons/pip_services3_commons.dart';
+﻿import 'package:pip_services3_commons/pip_services3_commons.dart';
 
 import './MetricRecordValue.dart';
-
-class MetricRecordValueMap extends MapBase {
-  final _values = <String, MetricRecordValue>{};
-
-  @override
-  MetricRecordValue operator [](Object key) {
-    return _values[key];
-  }
-
-  @override
-  void operator []=(key, value) {
-    _values[key] = value;
-  }
-
-  @override
-  void clear() {
-    _values.clear();
-  }
-
-  @override
-  Iterable<String> get keys => _values.keys;
-
-  @override
-  Object remove(Object key) {
-    return _values.remove(key);
-  }
-
-  @override
-  Iterable<MetricRecordValue> get values => _values.values;
-}
 
 class MetricRecord implements IIdentifiable<String> {
   @override
@@ -43,5 +12,32 @@ class MetricRecord implements IIdentifiable<String> {
   String d1;
   String d2;
   String d3;
-  MetricRecordValueMap val;
+  Map<String, MetricRecordValue> val;
+
+  void fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    th = json['th'];
+    rng = json['rng'];
+    d1 = json['d1'];
+    d2 = json['d2'];
+    d3 = json['d3'];
+    var items = json['val'];
+    val = Map<String, MetricRecordValue>.from(items.map((key, item) {
+      return MapEntry(key as String, MetricRecordValue.fromJson(item));
+    }));
+  }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'th': th,
+      'rng': rng,
+      'd1': d1,
+      'd2': d2,
+      'd3': d3,
+      'val': val,
+    };
+  }
 }

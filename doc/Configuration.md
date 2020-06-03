@@ -1,7 +1,7 @@
 # Configuration Guide <br/> Clusters service Microservice
 
 Cluster microservice configuration structure follows the 
-[standard configuration](https://github.com/pip-services/pip-services3-container-node/doc/Configuration.md) 
+[standard configuration](https://github.com/pip-services/pip-services3-container-dart/doc/Configuration.md) 
 structure. 
 
 * [persistence](#persistence)
@@ -19,7 +19,7 @@ while MongoDB is a good option with outstanding performance and scalability, sui
 You can choose and configure the option that suits your needs.
 
 For more information on this section read 
-[Pip.Services Configuration Guide](https://github.com/pip-services/pip-services3-container-node/doc/Configuration.md#persistence)
+[Pip.Services Configuration Guide](https://github.com/pip-services/pip-services3-container-dart/doc/Configuration.md#persistence)
 
 ### <a name="persistence_memory"></a> Memory
 
@@ -102,4 +102,4 @@ Example:
 ```
 
 For more information on this section read 
-[Pip.Services Configuration Guide](https://github.com/pip-services/pip-services3-container-node/doc/Configuration.md#deps)
+[Pip.Services Configuration Guide](https://github.com/pip-services/pip-services3-container-dart/doc/Configuration.md#deps)

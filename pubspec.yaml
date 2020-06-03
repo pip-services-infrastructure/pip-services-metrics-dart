@@ -14,6 +14,7 @@ dependencies:
   pip_services3_rpc: ^1.0.3
   pip_services3_data: ^1.0.5
   pip_services3_mongodb: ^1.0.4
+  http: "^0.12.0"
 
 dev_dependencies:
   test: '>=1.14.2 <2.0.0'

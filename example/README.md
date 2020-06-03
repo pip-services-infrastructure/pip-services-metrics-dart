@@ -16,4 +16,4 @@ The microservice currently supports the following deployment options:
 * External APIs: HTTP/REST
 * Persistence: Memory, Flat Files, MongoDB
 
-For examples see Readme.md file.
+For examples see Readme.md file on GitHub.

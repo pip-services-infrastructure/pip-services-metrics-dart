@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 import 'dart:math';
 
 import 'package:pip_services3_commons/pip_services3_commons.dart';
@@ -163,7 +163,7 @@ class MetricsMemoryPersistence
 
   /// correlationId String
   /// filter FilterParams
-   @override
+  @override
   Future deleteByFilter(String correlationId, FilterParams filter) {
     return super.deleteByFilterEx(correlationId, _composeFilter(filter));
   }

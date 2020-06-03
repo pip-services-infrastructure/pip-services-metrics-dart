@@ -11,7 +11,7 @@ class MetricValueV1 {
 
   MetricValueV1();
 
-  factory MetricValueV1.fromJson(Map<String, dynamic> json){
+  factory MetricValueV1.fromJson(Map<String, dynamic> json) {
     var c = MetricValueV1();
     c.fromJson(json);
     return c;

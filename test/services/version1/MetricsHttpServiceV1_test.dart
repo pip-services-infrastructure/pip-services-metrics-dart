@@ -59,7 +59,7 @@ void main() {
     test('TestMetrics', () async {
       // Update metric once
 
-     var responce =  await rest.post(url + '/v1/metrics/update_metric',
+      var responce = await rest.post(url + '/v1/metrics/update_metric',
           headers: {'Content-Type': 'application/json'},
           body: json.encode({
             'update': MetricUpdateV1()
@@ -250,9 +250,10 @@ void main() {
 
       var responce =
           await rest.post(url + '/v1/metrics/get_metric_definitions');
-      var items = json.decode(responce.body).map((item)=>MetricDefinitionV1.fromJson(item));
-      var definitions =
-          List<MetricDefinitionV1>.from(items);
+      var items = json
+          .decode(responce.body)
+          .map((item) => MetricDefinitionV1.fromJson(item));
+      var definitions = List<MetricDefinitionV1>.from(items);
       expect(1, definitions.length);
       MetricDefinitionV1 definition;
       definition = definitions[0];

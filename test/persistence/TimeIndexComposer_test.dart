@@ -4,7 +4,6 @@ import 'package:pip_services3_commons/pip_services3_commons.dart';
 
 void main() {
   group('TimeIndexComposerTest', () {
-    
     test('TestComposeIndex', () {
       var index = TimeIndexComposer.composeIndex(
           TimeHorizonV1.Total, 2018, 8, 26, 14, 33);

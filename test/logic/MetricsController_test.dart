@@ -195,7 +195,6 @@ void main() {
       // Get a single definition
       definition = await controller.getMetricDefinitionByName(null, 'metric2');
       expect('metric2', definition.name);
-      
     });
   });
 }
